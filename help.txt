@@ -1,0 +1,25 @@
+################################################################################################
+#   _____             _____ _____ _____    ____          _           
+#  |     |___ ___ ___|  |  |  _  |   | |  |    \ ___ ___| |_ ___ ___ 
+#  |  |  | . | -_|   |  |  |   __| | | |  |  |  | . |  _| '_| -_|  _|
+#  |_____|  _|___|_|_|\___/|__|  |_|___|  |____/|___|___|_,_|___|_|  
+#        |_|                                                         
+################################################################################################
+#
+# Generate client config
+
+docker run --rm -v /tmp:/data carcinogen75/openvpn addclient
+HOST_IP=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
+sudo sed -i -e "s/my-server-1/$HOST_IP/" /tmp/client.ovpn
+
+# Move /tmp/client.ovpn to your client PC for connecting
+#
+# Start openvpn server as:
+docker run --cap-add=NET_ADMIN -p 1194:1194/udp --privileged -d carcinogen75/openvpn startserver
+
+# Connect!
+# To stop server use:
+docker ps
+docker stop CONTAINER_ID
+
+################################################################################################
