@@ -31,7 +31,8 @@ addclient () {
     RES=$(<client.ovpn)
     RES=${RES/ca ca.crt/<ca>${NL}${FILE_CA}${NL}<\/ca>}
     RES=${RES/cert client.crt/<cert>${NL}${FILE_CERT}${NL}<\/cert>}
-    echo "${RES/key client.key/<key>${NL}${FILE_KEY}${NL}<\/key>}" > ./client.ovpn
+    RES=${RES/key client.key/<key>${NL}${FILE_KEY}${NL}<\/key>}
+    echo ${RES} > ./client.ovpn
     
     cp ./client.ovpn /data/client.ovpn
     rm ./client*.*
